@@ -1,5 +1,6 @@
-# 1. AWS Provider Configuration & Remote Backend
 terraform {
+  required_version = ">= 1.0.0"
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -7,16 +8,15 @@ terraform {
     }
   }
 
-  # 💡 backend "s3" ကို ဒီ terraform block ထဲမှာ ထည့်ရပါမယ်
-  backend "s3" {
-    bucket         = "yuzana-tf-state-bucket-2026"
-    key            = "dev/terraform.tfstate"
-    region         = "ap-southeast-1"
-    dynamodb_table = "terraform-state-locks"
-    encrypt        = true
-  }
+  # S3 Backend ကို ခေတ္တ comment ခံထားပါ
+  # backend "s3" {
+  #   bucket         = "yuzana-tf-state-bucket-2026"
+  #   key            = "exxon-platform/terraform.tfstate"
+  #   region         = "ap-southeast-1"
+  #   dynamodb_table = "terraform-state-locks"
+  # }
 }
 
 provider "aws" {
-  region = "ap-southeast-1"
+  region = var.aws_region
 }
