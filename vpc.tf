@@ -1,5 +1,5 @@
 # 1. Custom VPC
-resource "aws+vpc" "custom_vpc" {
+resource "aws_vpc" "custom_vpc" {
   cidr_block           = var.vpc_cidr
   enable_dns_support   = true
   enable_dns_hostnames = true
