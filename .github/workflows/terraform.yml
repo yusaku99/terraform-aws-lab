@@ -1,0 +1,54 @@
+name: "Terraform CI/CD Pipeline"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    name: "Terraform Automation"
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. GitHub Repo ထဲက Code များကို ရယူခြင်း
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 2. Terraform CLI ကို Runner တွင် Install လုပ်ခြင်း
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
+      # 3. Code Format မှန်မမှန် စစ်ဆေးခြင်း
+      - name: Terraform Format Check
+        run: terraform fmt -check
+
+      # 4. Terraform Initialization (S3 Backend သို့ ချိတ်ခြင်း)
+      - name: Terraform Init
+        run: terraform init
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: "ap-southeast-1"
+
+      # 5. Terraform Plan ရန်းပြီး Change များကို တွက်ချက်ခြင်း
+      - name: Terraform Plan
+        run: terraform plan
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: "ap-southeast-1"
+
+      # 6. Push လုပ်ခဲ့လျှင် (Main branch သို့ရောက်ပါက) အလိုအလျောက် Apply ရန်းခြင်း
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: "ap-southeast-1"
