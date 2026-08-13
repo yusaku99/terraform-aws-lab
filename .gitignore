@@ -1,0 +1,9 @@
+# Local state files & directories (S3 ပေါ်မှာပဲ ရှိရမည်)
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Secret and credential files
+*.pem
+*.tfvars
