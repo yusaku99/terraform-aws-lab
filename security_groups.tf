@@ -1,7 +1,7 @@
 resource "aws_security_group" "web_sg" {
   name        = "exxon-web-server-sg"
   description = "Allow SSH and HTTP inbound traffic"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = aws_vpc.custom_vpc.id
 
   # SSH Access (Management)
   ingress {
