@@ -5,7 +5,7 @@ resource "aws+vpc" "custom_vpc" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "Exxon-Production-VPC"
+    Name        = "Exxon-Production-VPC"
     Environment = "Production"
   }
 }
@@ -17,7 +17,7 @@ resource "aws_subnet" "public_subnet" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "Exxon-Public-Subnet"
+    Name        = "Exxon-Public-Subnet"
     Environment = "Production"
   }
 }
@@ -29,7 +29,7 @@ resource "aws_subnet" "private_subnet" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name = "Exxon-Private-Subnet"
+    Name        = "Exxon-Private-Subnet"
     Environment = "Production"
   }
 }
@@ -39,7 +39,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.custom_vpc.id
 
   tags = {
-    Name = "Exxon-IGW"
+    Name        = "Exxon-IGW"
     Environment = "Production"
   }
 }
@@ -54,7 +54,7 @@ resource "aws_route_table" "public_route_table" {
   }
 
   tags = {
-    Name = "Exxon-Public-Route-Table"
+    Name        = "Exxon-Public-Route-Table"
     Environment = "Production"
   }
 }
